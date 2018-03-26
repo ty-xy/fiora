@@ -59,6 +59,7 @@
                 user: data,
                 login: true
               })
+              console.log(msg,data)
               this.$message.success(msg)
               setTimeout(this.$router.push({path: '/'}), 500)
             })

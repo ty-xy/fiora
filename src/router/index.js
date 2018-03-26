@@ -16,6 +16,12 @@ import VueRouter from 'vue-router'
 import store from 'store'
 import NProgress from 'nprogress'
 import 'nprogress/nprogress.css'
+import axios from 'axios'
+import VueAxios from 'vue-axios'
+import $ from 'jquery'
+
+Vue.prototype.$axios = axios;
+
 
 //import components
 //view page warp component
@@ -23,6 +29,10 @@ import viewPageComponent from 'pages/App'
 
 //home
 import homeComponent from 'pages/home'
+//check
+import checkComponent from 'pages/check'
+//choose
+import chooseComponent from 'pages/check/choose'
 //404
 import noPageComponent from 'pages/error/404'
 //login
@@ -36,7 +46,8 @@ import saveTableComponent from 'pages/table/save'
 //bar charts
 import barChartsComponent from 'pages/charts/bar'
 
-Vue.use(VueRouter)
+Vue.use(VueRouter,VueAxios, axios)
+
 
 //使用AMD方式加载
 // component: resolve => require(['pages/home'], resolve),
@@ -60,10 +71,29 @@ const routes = [{
     name: 'home',
     component: homeComponent,
     meta: {
-      title: "主页",
+      title: "出题界面",
       auth: true
     }
-  }, {
+  }, 
+  {
+    path: '/check',
+    name: 'check',
+    component: checkComponent,
+    meta: {
+      title: "审核界面",
+      auth: true
+    } 
+  },
+  {
+    path: '/choose',
+    name: 'choose',
+    component: chooseComponent,
+    meta: {
+      title: "出题界面",
+      auth: true
+    } 
+  },
+  {
     path: '/table/base',
     name: 'tableBase',
     component: baseTableComponent,
@@ -84,7 +114,7 @@ const routes = [{
     name: 'tableUpdate',
     component: saveTableComponent,
     meta: {
-      title: "数据修改",
+      title: "数据更改",
       auth: true
     }
   }, {

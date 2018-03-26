@@ -46,29 +46,37 @@
     data(){
       return {
         nav_menu_data: [{
-          title: "主页",
+          title: "出题",
           path: "/home",
           icon: "fa-home"
-        }, {
-          title: "表格管理",
-          path: "/table",
-          icon: "fa-table",
-          child: [{
-            title: "基本表格",
-            path: "/table/base"
-          }, {
-            title: "排序表格",
-            path: "/table/sort"
-          }]
-        }, {
-          title: "图表管理",
-          path: "/charts",
-          icon: "fa-bar-chart-o",
-          child: [{
-            title: "柱状图表",
-            path: "/charts/bar"
-          }]
-        }]
+        },
+         {
+          title: "审核",
+          path: "/check",
+          icon: "fa-check"
+        },
+        //  {
+        //   title: "表格管理",
+        //   path: "/table",
+        //   icon: "fa-table",
+        //   child: [{
+        //     title: "基本表格",
+        //     path: "/table/base"
+        //   }, {
+        //     title: "排序表格",
+        //     path: "/table/sort"
+        //   }]
+        // }
+        //  {
+        //   title: "图表管理",
+        //   path: "/charts",
+        //   icon: "fa-bar-chart-o",
+        //   child: [{
+        //     title: "柱状图表",
+        //     path: "/charts/bar"
+        //   }]
+        // }
+        ]
       }
     }
   }

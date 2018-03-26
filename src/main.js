@@ -31,7 +31,10 @@ import Plugins from 'plugins'
 import App from './App'
 //导入mock数据
 import './mock'
+import $ from 'jquery'
+import axios from 'axios'
 
+Vue.prototype.$axios = axios;
 //使用element-ui
 Vue.use(ElementUI)
 

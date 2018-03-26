@@ -111,6 +111,7 @@
           this.$fetch.api_table.save(this.form)
             .then(({msg}) => {
               this.$message.success(msg)
+              console.log(this.$message)
               setTimeout(this.$router.back(), 500)
             })
             .catch(() => {
