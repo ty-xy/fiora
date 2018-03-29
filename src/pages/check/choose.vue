@@ -80,7 +80,14 @@
       get_form_data(){
         this.load_data = true
         const that = this
-        this.$axios.get(`${API_HOST}/betopic/${that.route_id}`).then(function(res){
+        // this.$axios.get(`${API_HOST}/betopic/${that.route_id}`).then(function(res){
+        //        console.log(res,"res") 
+        //          if(res.status === 200||res.status === 201){
+        //              that.load_data = false
+        //              that.form = res.data
+        //          }
+        // })
+        this.$axios.get(`http://localhost:1337/betopic/${that.route_id}`).then(function(res){
                console.log(res,"res") 
                  if(res.status === 200||res.status === 201){
                      that.load_data = false
@@ -138,25 +145,48 @@
           delete data.id 
           delete data.value
           console.log(data,"data",data.time)
-     	 this.$axios.post(API_HOST+'/topic',data).then(function(res){
-                 if(res.status === 200||res.status === 201){
-                     that.$message.success("创建成功")
-                    //  console.log(res)
+     	//   this.$axios.post(API_HOST+'/topic',data).then(function(res){
+        //          if(res.status === 200||res.status === 201){
+        //              that.$message.success("创建成功")
+        //             //  console.log(res) 
+        //             //  already[data.time]=data.value
+        //               that.on_submit_loading = false
+        //               const user_data ={
+        //                   status :1,
+        //                   chang:data.time
+        //               }
+        //               that.$axios.put(`${API_HOST}/betopic/${that.route_id}`,user_data).then(function(ress){
+        //                   if(res.status===200||res.status===201){
+        //                        setTimeout(that.$router.back(), 500)
+        //                   }
+        //               })
+        //          }
+		// 	}).catch(function(error){
+		// 		console.log(error);
+		// 	})
+            this.$axios.post("http://localhost:1337/topic",data).then(function(res){
+                if(res.status === 200||res.status === 201){
+                    that.$message.success("创建成功")
+                    //  console.log(res) 
                     //  already[data.time]=data.value
-                      that.on_submit_loading = false
-                      const user_data ={
-                          status :1,
-                          chang:data.time
-                      }
-                      that.$axios.put(`${API_HOST}/betopic/${that.route_id}`,user_data).then(function(ress){
-                          if(res.status===200||res.status===201){
-                               setTimeout(that.$router.back(), 500)
-                          }
-                      })
-                 }
-			}).catch(function(error){
-				console.log(error);
-			})
+                    that.on_submit_loading = false
+                    const t = data.time
+                    const user_data ={
+                        status :1,
+                        chang:new Date(t).toLocaleString(), 
+                        title:data.title,
+                        classify:data.classify
+                    }
+                    that.$axios.put(`http://localhost:1337/betopic/${that.route_id}`,user_data).then(function(ress){
+                        if(res.status===200||res.status===201){
+                            console.log(ress)
+                            setTimeout(that.$router.back(), 500)
+                        }
+                    })
+                }
+            }).catch(function(error){
+                console.log(error);
+            })
         })
       }
     },

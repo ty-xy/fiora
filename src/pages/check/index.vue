@@ -110,8 +110,26 @@
        get_table_data(){
         this.load_data = true
         const that = this
-			this.$axios.get(API_HOST+"/betopic",{params:{sort: {createdAt: 0 },search:{status:
-            3}}}).then(function(res){
+			// this.$axios.get(API_HOST+"/betopic",{params:{sort: {createdAt: 0 },search:{status:
+            // 3}}}).then(function(res){
+            //      console.log(res,res.data.length)
+            //      if(res.status === 200||res.status === 201){
+            //          that.load_data = false
+            //          that.total = res.data.length
+            //         //  alert(that.total)
+            //          const pages = that.currentPage -1
+            //          if(res.data.length-pages*10>10){
+            //           that.table_data = res.data.slice(pages*10,10)
+            //           }else{
+            //              that.table_data = res.data.slice(pages*10)
+            //           }
+            //           console.log(pages,that.table_data)
+            //          that.$message.success("获取成功")
+            //      }
+			// }).catch(function(error){
+			// 	console.log(error);
+			// })
+            this.$axios.get("http://localhost:1337/betopic",{params:{sort: {createdAt: 0 },search:{status:3}}}).then(function(res){
                  console.log(res,res.data.length)
                  if(res.status === 200||res.status === 201){
                      that.load_data = false
@@ -119,7 +137,7 @@
                     //  alert(that.total)
                      const pages = that.currentPage -1
                      if(res.data.length-pages*10>10){
-                      that.table_data = res.data.slice(pages*10,10)
+                      that.table_data = res.data.slice(pages*10,pages*10+10)
                       }else{
                          that.table_data = res.data.slice(pages*10)
                       }
@@ -157,17 +175,26 @@
         })
             .then(() => {
             that.load_data = true
-             that.$axios.delete(`${API_HOST}/betopic/${item}`)
-                .then((res) => {
-                    if(res.status === 200||res.status === 201){
-                        that.get_table_data()
-                        that.$message.success("删除成功")
+             that.$axios.delete(`http://localhost:1337/betopic/${item}`).then((res)=>{
+                 if(res.status === 200 || res.status  === 201){
+                     that.get_table_data()
+                     that.$message.sucess("删除成功")
+                     that.load_data = false
+                 }
+             }).catch(()=>{
+
+             })
+            //  that.$axios.delete(`${API_HOST}/betopic/${item}`)
+            //     .then((res) => {
+            //         if(res.status === 200||res.status === 201){
+            //             that.get_table_data()
+            //             that.$message.success("删除成功")
                         
-                         that.load_data = false
-                    }
-                })
-                .catch(() => {
-                })
+            //              that.load_data = false
+            //         }
+            //     })
+            //     .catch(() => {
+            //     })
             })
             .catch(() => {
             })

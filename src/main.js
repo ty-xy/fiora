@@ -49,6 +49,9 @@ Vue.config.productionTip = false
 
 //是否开启工具调试
 Vue.config.devtools = process.env.NODE_ENV === 'development'
+// 配置默认axios
+
+
 
 new Vue({
   router,

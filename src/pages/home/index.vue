@@ -62,8 +62,18 @@
 				"title":this.form.title,
                 "status":3,
                 "classify":this.form.selectedOptions2[0],
+               
 			};
-			this.$axios.post(API_HOST+'/betopic',user_data).then(function(res){
+			// this.$axios.post(API_HOST+'/betopic',user_data).then(function(res){
+            //      if(res.status === 200||res.status === 201){
+            //          that.$message.success("创建成功")
+            //          that.form.title = ""
+            //          console.log(res,user_data)
+            //      }
+			// }).catch(function(error){
+			// 	console.log(error);
+			// })
+            this.$axios.post('http://localhost:1337/betopic',user_data).then(function(res){
                  if(res.status === 200||res.status === 201){
                      that.$message.success("创建成功")
                      that.form.title = ""

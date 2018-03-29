@@ -4,18 +4,18 @@
       <el-dropdown trigger="click" class="notification-list">
         <div class="notification-btn">
           <img :src="get_user_info.user.avatar" :alt="get_user_info.user.name"/>
-          <span v-text="get_user_info.user.name"></span>
+          <span v-text="get_user_info.user.username"></span>
           <span class="icon"></span>
         </div>
         <el-dropdown-menu slot="dropdown" class="dropdown-menu">
           <el-dropdown-item class="dropdown-list">
-            <a href="javascript:" class="dropdown-btn" @click="user_click(0)">
+            <a href="javascript:" class="dropdown-btn" @click="user_click(1)">
               <i class="icon fa fa-user"></i>
               <span>个人信息</span>
             </a>
           </el-dropdown-item>
           <el-dropdown-item class="dropdown-list">
-            <a href="javascript:" class="dropdown-btn" @click="user_click(0)">
+            <a href="javascript:" class="dropdown-btn" @click="user_click(2)">
               <i class="icon fa fa-cog"></i>
               <span>设置</span>
             </a>
@@ -69,6 +69,7 @@
       },
       user_info() {
         //个人信息
+        console.log(this.get_user_info,31231312)
       },
       user_setting() {
         //设置
@@ -81,6 +82,7 @@
             break
           case USER_INFO:
             //个人信息
+            this.user_info()
             break
           case USER_SETTING:
             //设置

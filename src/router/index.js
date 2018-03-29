@@ -155,7 +155,8 @@ router.beforeEach((to, from, next) => {
   let toName = to.name
   // let fromName = from.name
   let is_login = store.state.user_info.login
-
+  let token = store.state.user_info.token
+  
   if (!is_login && toName !== 'login') {
     next({
       name: 'login'
@@ -174,6 +175,8 @@ router.beforeEach((to, from, next) => {
 //路由完成之后的操作
 router.afterEach(route => {
   NProgress.done()
+  axios.defaults.headers.common['Authorization'] =  "Bearer" +" " +localStorage.getItem("token")
+//   console.log(localStorage.getItem("token"))
 })
 
 export default router
