@@ -28,6 +28,7 @@
   import {mapActions} from 'vuex'
   import {port_user, port_code} from 'common/port_uri'
   import {SET_USER_INFO} from 'store/actions/type'
+  import {API_HOST} from '../../util/config'
 
   export default{
     data(){
@@ -59,8 +60,8 @@
           }
           console.log(this.form)
           const that = this
-        //登录提交
-          this.$axios.post("http://localhost:1337/auth/local",user_data).then((res)=>{
+         // 登录提交
+          this.$axios.post(API_HOST+"/auth/local",user_data).then((res)=>{
                 // console.log(res.data)
                      that.$message.success("登录成功")
                      that.load_data =false

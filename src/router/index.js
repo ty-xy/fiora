@@ -176,7 +176,6 @@ router.beforeEach((to, from, next) => {
 router.afterEach(route => {
   NProgress.done()
   axios.defaults.headers.common['Authorization'] =  "Bearer" +" " +localStorage.getItem("token")
-//   console.log(localStorage.getItem("token"))
 })
 
 export default router

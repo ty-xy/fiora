@@ -21,4 +21,5 @@ export default {
       cookieStorage.set('user_info', userinfo)
     }
   }
+  
 }
