@@ -13,12 +13,6 @@
           type="selection"
           width="55">
         </el-table-column>
-        <!-- <el-table-column
-          prop="id"
-          label="id"
-           width="100"
-          sortable>
-        </el-table-column> -->
         <el-table-column
           prop="classify"
           label="分类"
@@ -31,37 +25,19 @@
           sortable>
         </el-table-column>
         <el-table-column
-          prop="time"
-          label="发布场次"
-          width="230" 
-          sortable>
-        </el-table-column>
-        <el-table-column
-          cell-style="color:red"
-          prop="status"
-          label="状态"
-          width="180"
+          prop="createdAt"
+          label="出题时间"
+          width="240" 
           sortable>
         </el-table-column>
         <el-table-column
           label="操作"
-          width="180">
+          width="240">
           <template scope="props">
-            <el-button type="danger" 
-            size="small" 
-            icon="delete"
-             @click="delete_data(props.row.id)" 
-             v-if= 'props.row.status==="等待中"'
-             >撤销发布</el-button>
-            <router-link 
-            :to="{name: 'detail', params: {data:props.row}}" 
-            tag="span" 
-            v-else>
-            <el-button type="info" 
-             size="small" 
-             icon="edit"
-             >查看详情</el-button>
-              </router-link>
+            <router-link :to="{name: 'choose', params: {id: props.row.id}}" tag="span">
+              <el-button type="info" size="middle" icon="edit" :disabled="props.row.status===1">通过</el-button>
+            </router-link>
+            <el-button type="danger" size="middle" icon="delete" @click="delete_data(props.row.id)">pass</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -69,7 +45,7 @@
         <el-button
           type="danger"
           icon="delete"
-          size="small"
+          size="middle"
           :disabled="batch_select.length === 0"
           @click="on_batch_del"
           slot="handler">
@@ -109,12 +85,13 @@
     name:'user',
      created(){
       this.get_table_data()
+      console.log(this.$dateFormat(new Date, "yyyy-MM-dd hh:mm:ss"))
     },
     methods: {
        get_table_data(){
         this.load_data = true
         const that = this
-			this.$axios.get(API_HOST+"/betopics",{params:{sort: {createdAt: 0 }}}).then(function(res){
+			this.$axios.get(API_HOST+"/betopic",{params:{sort: {createdAt: 0 }}}).then(function(res){
                  console.log(res,res.data.length)
                  if(res.status === 200||res.status === 201){
                      that.load_data = false
@@ -123,15 +100,15 @@
                      const pages = that.currentPage -1
                      if(res.data.length-pages*10>10){
                       that.table_data = res.data.slice(pages*10,pages*10+10)
-                       that.table_data.forEach((item)=>{
-                          item.time =  that.$dateFormat(item.time,"yyyy-MM-dd hh:mm:ss")
-                          item.status = item.status -1 >0 ?"已结束":item.status -1<0?"等待中":"进行中"
+                      that.table_data.forEach((item)=>{
+                          item.createdAt =  that.$dateFormat(new Date(item.createdAt), "yyyy-MM-dd hh:mm:ss") 
+                          console.log(item.createdAts)
                       })
                       }else{
                          that.table_data = res.data.slice(pages*10)
-                          that.table_data.forEach((item)=>{
-                          item.time =  that.$dateFormat(item.time,"yyyy-MM-dd hh:mm:ss") 
-                          item.status = item.status -1 >0 ?"已结束":item.status -1 <0?"等待中":"进行中"
+                         that.table_data.forEach((item)=>{
+                          item.createdAt =  that.$dateFormat(new Date(item.createdAt), "yyyy-MM-dd hh:mm:ss")
+                          console.log(item.createdAts)
                       })
                       }
                       console.log(pages,that.table_data)
@@ -140,9 +117,10 @@
 			}).catch(function(error){
 				console.log(error);
 			})
+
       },
       on_batch_del(){
-        this.$confirm('此操作将批量删除选择数据, 是否继续?', '提示', {
+        this.$confirm('此操作将批量删除选择数据,无法恢复, 是否继续?', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'
@@ -157,27 +135,21 @@
         that.currentPage = val
         this.get_table_data()
       },
-    //   cellStyle(row, column, rowIndex, columnIndex){
-    //      if(column===4){
-    //          return {
-    //              color:"red"
-    //          }
-    //      }
-    //   },
     delete_data(item){
         const that = this
-        this.$confirm('此操作将删除该数据, 是否继续?', '提示', {
+        this.$confirm('此操作将删除该数据, 无法恢复,是否继续?', '提示', {
             confirmButtonText: '确定',
             cancelButtonText: '取消',
             type: 'warning'
         })
             .then(() => {
             that.load_data = true
-             that.$axios.delete(`${API_HOST}/topic/${item}`)
+             that.$axios.delete(`${API_HOST}/betopic/${item}`)
                 .then((res) => {
                     if(res.status === 200||res.status === 201){
                         that.get_table_data()
                         that.$message.success("删除成功")
+                        
                          that.load_data = false
                     }
                 })
@@ -196,3 +168,8 @@
     }
   }
 </script>
+<style scoped lang="scss" type="text/scss">
+   .el-button{
+       padding:6px 15px;
+   }
+</style>

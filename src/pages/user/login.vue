@@ -77,33 +77,6 @@
           }).catch(({message})=>{
                 that.$message.success("请输入正确的用户或者密码")
           })
-           
-        // 注册
-        //   this.$axios.post("http://localhost:1337/auth/local/register",user_data).then((res)=>{
-        //         console.log(res.data)
-        //   }).catch(function(error){
-		// 		console.log(error);
-        //   })
-          
-        //   this.$fetch.api_user.login(this.form)
-        //     .then(({data, msg}) => {
-        //       this.set_user_info({
-        //         user: data,
-        //         login: true
-        //       })
-        //       console.log(msg,data)
-        //       this.$message.success(msg)
-        //       setTimeout(this.$router.push({path: '/'}), 500)
-        //     })
-        //     .catch(({code}) => {
-        //       this.load_data = false
-        //       if (code === port_code.error) {
-        //         this.$notify.info({
-        //           title: '温馨提示',
-        //           message: '账号和密码都为：admin'
-        //         })
-        //       }
-        //     })
         })
       }
     }

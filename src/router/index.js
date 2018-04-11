@@ -31,6 +31,10 @@ import viewPageComponent from 'pages/App'
 import homeComponent from 'pages/home'
 //check
 import checkComponent from 'pages/check'
+//nocheck
+import noCheckComponent from 'pages/nocheck/nocheck'
+//detail
+import detailComponent  from 'pages/check/detail'
 //choose
 import chooseComponent from 'pages/check/choose'
 //404
@@ -85,13 +89,31 @@ const routes = [{
     } 
   },
   {
+    path: '/detail',
+    name: 'detail',
+    component: detailComponent,
+    meta: {
+      title: "问题详情",
+      auth: true
+    } 
+  },
+  {
     path: '/choose',
     name: 'choose',
     component: chooseComponent,
     meta: {
       title: "出题界面",
       auth: true
-    } 
+    }
+  },
+  {
+    path: '/nocheck',
+    name: 'nocheck',
+    component: noCheckComponent,
+    meta: {
+      title: "出题界面",
+      auth: true
+    }
   },
   {
     path: '/table/base',

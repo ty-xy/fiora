@@ -10,7 +10,7 @@
   width: 220px;
   height: 100%;
   overflow-y: auto;
-  background-color: #424f63;
+  background: #414F63;
   .logo {
     margin: 10px auto;
     text-align: center;
@@ -31,7 +31,7 @@
       }
       &.is-active, &:hover {
         background-color: #353f4f !important;
-        color: #65cea7;
+        color:#FDD545;;
       }
     }
   }
