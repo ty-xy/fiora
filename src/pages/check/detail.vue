@@ -20,9 +20,9 @@
         border
         style="width: 100%;">
         <el-table-column
-          prop="createdBy.username"
+          prop="createdBy.nickName"
           label="用户"
-          width="100"
+          width="200"
           >
         </el-table-column>
         <el-table-column
@@ -218,4 +218,7 @@
         color: #E35C5D;
         letter-spacing: 0;
     }
+//    .left-side .menu-box .menu-list{
+//     color: #FDD545;
+// }
 </style>

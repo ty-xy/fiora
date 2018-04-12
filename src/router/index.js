@@ -36,7 +36,7 @@ import noCheckComponent from 'pages/nocheck/nocheck'
 //detail
 import detailComponent  from 'pages/check/detail'
 //choose
-import chooseComponent from 'pages/check/choose'
+// import chooseComponent from 'pages/nocheck/choose'
 //404
 import noPageComponent from 'pages/error/404'
 //login
@@ -96,15 +96,6 @@ const routes = [{
       title: "问题详情",
       auth: true
     } 
-  },
-  {
-    path: '/choose',
-    name: 'choose',
-    component: chooseComponent,
-    meta: {
-      title: "出题界面",
-      auth: true
-    }
   },
   {
     path: '/nocheck',

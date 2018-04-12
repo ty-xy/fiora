@@ -1,18 +1,17 @@
 <template>
   <div class="panel">
-    <panel-title :title="$route.meta.title"></panel-title>
     <div class="panel-body"
          :model="form"
          v-loading="load_data"
          element-loading-text="拼命加载中">
       <el-row>
-        <el-col :span="8">
+        <el-col :span="12">
           <el-form ref="form" :model="form" :rules="rules" label-width="100px">
             <el-form-item label="分类:">
-               <el-input v-model="form.classify" disabled style="width:250px"></el-input>
+               <el-input v-model="form.classify" disabled ></el-input>
             </el-form-item>
             <el-form-item label="题目:"  :title="form.title">
-              <el-input v-model="form.title" disabled style="width:250px" type="textarea"></el-input>
+              <el-input v-model="form.title" disabled  type="textarea"></el-input>
             </el-form-item>
             <el-form-item label="选择时间:" prop="time">
               <el-date-picker
@@ -22,7 +21,7 @@
                 format="yyyy-MM-dd "
                 @change="on_change_birthday"
                 placeholder="选择场次"
-                style="width: 250px;">
+                >
               </el-date-picker>
             </el-form-item>
              <el-form-item label="选择场次:" prop="value">
@@ -46,9 +45,14 @@
   </div>
 </template>
 <script type="text/javascript">
-  import {panelTitle} from 'components'
   import {API_HOST} from '../../util/config'
   export default{
+    props:{
+        routeId:{
+            type:String,
+            required:true
+        }
+    },
     data(){
       return {
         form: {
@@ -70,18 +74,18 @@
         options: [],
       }
     },
+    ready () {
+        console.log(this.routeId)
+    },
     created(){
-      this.route_id && this.get_form_data()
-      console.log(this.route_id)
-    //   this.on_change_time()
-    //   console.log(already)
+      this.get_form_data()
     },
     methods: {
       //获取数据
       get_form_data(){
         this.load_data = true
         const that = this
-        this.$axios.get(`${API_HOST}/betopic/${that.route_id}`).then(function(res){
+        this.$axios.get(`${API_HOST}/betopic/${that.routeId}`).then(function(res){
                console.log(res,"res") 
                  if(res.status === 200||res.status === 201){
                      that.load_data = false
@@ -92,14 +96,12 @@
       //时间选择改变时
       on_change_birthday(val){
         this.$set(this.form, 'time', val)
-
       },
       on_change_status(val){
         this.$set(this.form, 'status', val)
       },
       on_submit_select(val){
        this.on_change_time()
-
       },
       //页码选择
        handleCurrentChange(val) {
@@ -155,7 +157,7 @@
                       console.log(user_data.status)
                       that.$axios.put(`${API_HOST}/betopic/${that.route_id}`,user_data).then(function(ress){
                           if(res.status===200||res.status===201){
-                               setTimeout(that.$router.back(), 500)
+                            //    setTimeout(that.$router.back(), 500)
                           }
                       })
                  }
@@ -166,15 +168,11 @@
       }
     },
     components: {
-      panelTitle
     }
   }
 </script>
 <style scoped  lang="scss" type="text/scss" rel="stylesheet/scss">
     .el-row{
-       display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
+      
     }
 </style>
