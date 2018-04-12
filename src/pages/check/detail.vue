@@ -4,43 +4,57 @@
     <div class="panel-body"
          v-loading="load_data"
          element-loading-text="拼命加载中">
-      <el-row>
-        <el-col :span="8">
-          <el-form ref="form" :model="form" :rules="rules" label-width="100px">
-            <el-form-item label="分类:">
-               <el-input v-model="form.classify" disabled style="width:250px"></el-input>
-            </el-form-item>
-            <el-form-item label="题目:"  :title="form.title">
-              <el-input v-model="form.title" disabled style="width:250px" type="textarea"></el-input>
-            </el-form-item>
-            <el-form-item label="选择时间:" prop="time">
-              <el-date-picker
-                v-model="form.time"
-                type="date"
-                :editable="false"
-                format="yyyy-MM-dd "
-                @change="on_change_birthday"
-                placeholder="选择场次"
-                style="width: 250px;">
-              </el-date-picker>
-            </el-form-item>
-             <el-form-item label="选择场次:" prop="value">
-                 <el-select v-model="form.value" placeholder="请选择" @change ="on_submit_select">
-                    <el-option
-                    v-for="item in options"
-                    :key="item.value"
-                    :label="item.label"
-                    :value="item.value">
-                    </el-option>
-                </el-select>
-              </el-form-item>
-            <el-form-item>
-              <el-button type="primary" @click="on_submit_form" :loading="on_submit_loading">立即提交</el-button>
-              <el-button @click="$router.back()">取消</el-button>
-            </el-form-item>
-          </el-form>
-        </el-col>
-      </el-row>
+         <el-row>
+            <h1 class="title">{{$route.params.data.title}}</h1>
+            <el-button type="warning" >{{$route.params.data.status}}</el-button>
+         </el-row>
+          <el-row>
+             <p class="answer">阅览 <span class="zhiti">{{$route.params.data.messageNum||0}}</span></p>
+             <p class="answer answer-left" >回答<span class="zhiti">{{$route.params.data.toAnswer.length||0}}</span>
+             </p>
+         </el-row>
+         <el-table
+        :data="options"
+        v-loading="load_data"
+        element-loading-text="拼命加载中"
+        border
+        style="width: 100%;">
+        <el-table-column
+          prop="createdBy.nickName"
+          label="用户"
+          width="200"
+          >
+        </el-table-column>
+        <el-table-column
+          prop="body"
+          label="回答内容"
+          >
+        </el-table-column>
+        <el-table-column
+          prop="upVotes.length"
+          label="获赞"
+          width="230" 
+          sortable>
+        </el-table-column>
+        <el-table-column
+          cell-style="color:red"
+          prop="createdAt"
+          label="时间"
+          width="300"
+          sortable>
+        </el-table-column>
+        <el-table-column
+          label="操作"
+          width="180">
+          <template scope="props">
+            <el-button type="danger"
+            class="button"
+             plain
+             @click="delete_data(props.row.id)" 
+             >删除该回答</el-button>
+          </template>
+        </el-table-column>
+      </el-table>
     </div>
   </div>
 </template>
@@ -59,7 +73,7 @@
           zip: 412300,
           value:""
         },
-        route_id: this.$route.params.id,
+        route_id: this.$route.params.data.id,
         load_data: false,
         on_submit_loading: false,
         rules: {
@@ -80,11 +94,11 @@
       get_form_data(){
         this.load_data = true
         const that = this
-        this.$axios.get(`${API_HOST}/betopic/${that.route_id}`).then(function(res){
+        this.$axios.get(`${API_HOST}/detail`,{params:{search:{topic:that.route_id}}}).then(function(res){
                console.log(res,"res") 
                  if(res.status === 200||res.status === 201){
                      that.load_data = false
-                     that.form = res.data
+                     that.options=res.data
                  }
         })
       },
@@ -132,9 +146,11 @@
           this.on_submit_loading = true
           const data = this.form
           data.yearmonth = data.time
-          data.status = 1;
           data.time  += data.value 
           data.time = new Date(data.time).getTime()
+          const statusT = data.time - Date.now()
+          data.status = statusT>0 ? 0 : (120 * 60 * 1000 +  statusT)>0 ? 1 : 2
+          console.log(data.status)
           delete data.id 
           delete data.value
           console.log(data,"data",data.time)
@@ -143,12 +159,13 @@
                      that.$message.success("创建成功")
                     //  console.log(res) 
                     //  already[data.time]=data.value
-                     const t = data.time
+                      const t = data.time
                       that.on_submit_loading = false
                       const user_data ={
                           status :1,
-                          chang:new Date(t).toLocaleString(), 
+                          chang:new Date(t).toLocaleString()
                       }
+                      console.log(user_data.status)
                       that.$axios.put(`${API_HOST}/betopic/${that.route_id}`,user_data).then(function(ress){
                           if(res.status===200||res.status===201){
                                setTimeout(that.$router.back(), 500)
@@ -167,10 +184,41 @@
   }
 </script>
 <style scoped  lang="scss" type="text/scss" rel="stylesheet/scss">
+    .title{
+        font-family: PingFangHK-Medium;
+        font-size: 24px;
+        color: #333333;
+        letter-spacing: 0.19px;
+        margin-right:17px;
+    }
     .el-row{
        display: flex;
-        flex-direction: column;
+        // flex-direction: column;
         align-items: center;
-        justify-content: center;
+        margin-left:30px;
+        height:56px;
+        // justify-content: center;
     }
+    .answer{
+        font-family: PingFangHK-Regular;
+        font-size: 16px;
+        color: #999999;
+        letter-spacing: 0.19px;
+    }
+    .answer-left{
+        margin-left:16px;
+    }
+    .zhiti{
+         color: #000;
+         margin-left:2px;
+    }
+    .button{
+        font-family: PingFangHK-Regular;
+        font-size: 14px;
+        color: #E35C5D;
+        letter-spacing: 0;
+    }
+//    .left-side .menu-box .menu-list{
+//     color: #FDD545;
+// }
 </style>

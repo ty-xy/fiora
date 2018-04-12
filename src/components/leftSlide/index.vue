@@ -1,8 +1,9 @@
 <template>
   <div class="left-side">
     <div class="left-side-inner">
-      <router-link to="/" class="logo block">
-        <img src="./images/logo.png" alt="AdminX">
+      <router-link to="/" class="logo block imgset">
+        <img src="./images/13logo.png" alt="AdminX" class="img">
+        <img src="./images/logo2x.png" alt="AdminX" class="img1">
       </router-link>
       <el-menu
         class="menu-box"
@@ -48,12 +49,17 @@
         nav_menu_data: [{
           title: "出题",
           path: "/home",
-          icon: "fa-home"
+          icon: "fa-telegram"
         },
+        {
+            title: "未审核",
+            path: "/nocheck",
+            icon: "fa-comment"
+       },
          {
           title: "审核",
           path: "/check",
-          icon: "fa-check"
+          icon: "fa-check-circle"
         },
         //  {
         //   title: "表格管理",
@@ -81,3 +87,26 @@
     }
   }
 </script>
+<style scoped lang="scss" type="text/scss">
+    .img{
+        max-width:100% !important;
+        width:38px;
+        height:38px;
+         margin-top:16px;
+        margin-bottom:49px;
+    }
+    .img1{
+        height:38px;
+          margin-top:16px;
+        margin-bottom:49px;
+        margin-left:-38px;
+        overflow:hidden
+    }
+    .imgset{
+        display: flex;
+        align-items: center;
+       justify-content: center;
+        // height:30px;
+        // width:88px;
+    }
+</style>
